@@ -1,0 +1,47 @@
+name: Sync Release to Supabase
+on:
+    release:
+        types: [published]
+    workflow_dispatch:
+        inputs:
+            release_tag:
+                description: 'Release tag to sync (e.g., v0.0.1)'
+                required: true
+                type: string
+
+jobs:
+    sync-to-supabase:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 22
+
+            # 임시 package.json 생성해서 설치
+            - name: Setup dependencies
+              run: |
+                  echo '{"type": "module"}' > package.json
+                  npm install @supabase/supabase-js node-fetch
+
+            - name: Sync to Supabase (from release event)
+              if: github.event_name == 'release'
+              run: node scripts/sync-release-to-supabase.js
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+                  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+                  RELEASE_TAG: ${{ github.event.release.tag_name }}
+                  RELEASE_ID: ${{ github.event.release.id }}
+
+            - name: Sync to Supabase (manual trigger)
+              if: github.event_name == 'workflow_dispatch'
+              run: node scripts/sync-release-to-supabase.js
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+                  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+                  RELEASE_TAG: ${{ github.event.inputs.release_tag }}
+                  MANUAL_TRIGGER: true
