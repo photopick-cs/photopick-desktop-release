@@ -68,7 +68,7 @@ async function fetchReleaseById(releaseId) {
     console.log(`🔍 Fetching release by ID: ${releaseId}`);
 
     const response = await fetch(
-        `https://api.github.com/repos/sjly3k/eyeopen-desktop/releases/${releaseId}`,
+        `https://api.github.com/repos/photopick-cs/photopick-desktop-release/releases/${releaseId}`,
         {
             headers: {
                 Authorization: `token ${process.env.GITHUB_TOKEN}`,
@@ -88,7 +88,7 @@ async function fetchReleaseByTag(tag) {
     console.log(`🔍 Fetching release by tag: ${tag}`);
 
     const response = await fetch(
-        `https://api.github.com/repos/sjly3k/eyeopen-desktop/releases/tags/${tag}`,
+        `https://api.github.com/repos/photopick-cs/photopick-desktop-release/releases/tags/${tag}`,
         {
             headers: {
                 Authorization: `token ${process.env.GITHUB_TOKEN}`,
