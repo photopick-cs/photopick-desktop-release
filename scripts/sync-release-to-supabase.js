@@ -194,7 +194,7 @@ async function getSHA512FromYml(asset, release) {
 
             // GitHub API를 통해 yml 파일 내용 가져오기
             const ymlResponse = await fetch(
-                `https://api.github.com/repos/sjly3k/eyeopen-desktop/releases/assets/${ymlAsset.id}`,
+                `https://api.github.com/repos/photopick-cs/photopick-desktop-release/releases/assets/${ymlAsset.id}`,
                 {
                     headers: {
                         Authorization: `token ${process.env.GITHUB_TOKEN}`,
