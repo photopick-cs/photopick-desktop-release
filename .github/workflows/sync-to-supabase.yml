@@ -24,7 +24,7 @@ jobs:
             - name: Setup dependencies
               run: |
                   echo '{"type": "module"}' > package.json
-                  npm install @supabase/supabase-js node-fetch
+                  npm install @supabase/supabase-js node-fetch tslib
 
             - name: Sync to Supabase (from release event)
               if: github.event_name == 'release'
